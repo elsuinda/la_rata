@@ -1,0 +1,105 @@
+FUENTES_NOTICIAS_ARGENTINA = [
+    "https://www.lanacion.com.ar",          # La Nación
+    "https://www.clarin.com",               # Clarín
+    "https://www.infobae.com",              # Infobae
+    "https://www.pagina12.com.ar",          # Página/12
+    "https://www.lavoz.com.ar",             # La Voz del Interior
+    "https://www.ambito.com",               # Ámbito Financiero
+    "https://www.perfil.com",               # Perfil
+    "https://www.cronica.com.ar",           # Crónica
+    "https://www.diariopopular.com.ar",     # Diario Popular
+    "https://www.eldia.com",                # El Día
+    "https://www.laprensa.com.ar",          # La Prensa
+    "https://www.lmcordoba.com.ar",         # La Nueva Mañana
+    "https://www.losandes.com.ar",          # Los Andes
+    "https://www.eldiariodelapampa.com.ar", # El Diario de La Pampa
+    "https://www.eldiariocba.com.ar",       # El Diario de Córdoba
+    "https://www.eldia.com.ar",             # El Día (La Plata)
+    "https://www.eldiariodecarlospaz.com.ar", # El Diario de Carlos Paz
+    "https://www.eldiariodeargentina.com",  # El Diario de Argentina
+    "https://www.eldiariodeparana.com.ar",  # El Diario de Paraná
+    "https://www.eldiariodemoron.com.ar",   # El Diario de Morón
+    "https://www.eldiariodetandil.com.ar",  # El Diario de Tandil
+    "https://www.eldiariodeterra.com.ar",   # El Diario de Tierra del Fuego
+    "https://www.eldiariodetermasderio.com.ar", # El Diario de Termas de Río Hondo
+    "https://www.eldiariodeviedma.com.ar",  # El Diario de Viedma
+    "https://www.eldiariodialogo.com.ar",   # El Diario Diálogo
+    "https://www.eldiariodigital.com.ar",   # El Diario Digital
+    "https://www.eldiario24.com",           # El Diario 24
+    "https://www.eldiariodemocracia.com",   # El Diario Democracia
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Junín)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Lincoln)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Chacabuco)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Pinto)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Arenales)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Villegas)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Trenque Lauquen)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Pehuajó)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Carlos Casares)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (9 de Julio)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Bragado)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Chivilcoy)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Salto)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Rojas)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Colón)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Pergamino)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Arrecifes)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Capitán Sarmiento)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (San Antonio de Areco)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (San Andrés de Giles)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Carmen de Areco)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Chacabuco)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Arenales)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Pinto)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Villegas)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Lincoln)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Pehuajó)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Trenque Lauquen)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (25 de Mayo)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Bolívar)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Olavarría)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Azul)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Tandil)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Necochea)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Balcarce)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Mar del Plata)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Miramar)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Pueyrredón)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Alvarado)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Madariaga)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Dolores)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Chascomús)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Lezama)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Castelli)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Pila)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Ayacucho)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Tandil)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Rauch)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Las Flores)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Belgrano)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Guido)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Maipú)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Paz)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Alvear)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Lavalle)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Madariaga)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Pueyrredón)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Alvarado)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Madariaga)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Dolores)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Chascomús)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Lezama)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Castelli)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Pila)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Ayacucho)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Tandil)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Rauch)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Las Flores)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Belgrano)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Guido)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (Maipú)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Paz)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Alvear)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Lavalle)
+    "https://www.eldiariodemocracia.com.ar", # El Diario Democracia (General Madariaga)
+]
