@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block titulo %}Buscar noticias - LA RATA{% endblock %}
+{% block contenido %}
+<h1>Buscar noticias</h1>
+<form method="post" class="formulario">
+  <label for="terminos">Palabras clave o frases</label>
+  <input type="text" id="terminos" name="terminos" placeholder="ej: elecciones + reforma" value="{{ parametros.terminos }}">
+  <p class="ayuda">Usá <code>+</code> para combinar varios términos (todos deben aparecer).</p>
+
+  <label for="grupo">Fuentes</label>
+  <select id="grupo" name="grupo">
+  {% for clave, etiqueta in grupos.items() %}
+      <option value="{{ clave }}" {% if parametros.grupo == clave %}selected{% endif %}>{{ etiqueta }}</option>
+  {% endfor %}
+  </select>
+
+  <label for="filtro">Filtrar por fecha</label>
+  <select id="filtro" name="filtro">
+{% for clave, etiqueta in filtros.items() %}
+      <option value="{{ clave }}" {% if parametros.filtro == clave %}selected{% endif %}>{{ etiqueta }}</option>
+  {% endfor %}
+  </select>
+
+  <button type="submit" class="boton">Buscar</button>
+</form>
+
+{% if resultado is not none %}
+  <section class="resultados">
+    <h2>{{ resultado.noticias|length }} resultado(s)</h2>
+
+  {% if resultado.fuentes_error %}
+      <details class="aviso">
+        <summary>{{ resultado.fuentes_error|length }} fuente(s) no respondieron</summary>
+        <ul>
+{% for f in resultado.fuentes_error %}<li>{{ f }}</li>{% endfor %}
+        </ul>
+      </details>
+  {% endif %}
+
+  {% if resultado.noticias %}
+      <form method="post" action="{{ url_for('exportar_noticias') }}">
+        <ul class="lista-noticias">
+        {% for n in resultado.noticias %}
+            <li>
+              <label>
+                <input type="checkbox" name="resultado" value="[{{ n.fuente }}] {{ n.titulo }} - {{ n.enlace }}" checked>
+                <strong>{{ n.titulo }}</strong>
+                <span class="meta">{{ n.fuente }} · {{ n.publicado }}</span>
+                <p>{{ n.resumen }}</p>
+                <a href="{{ n.enlace }}" target="_blank" rel="noopener">Ver noticia</a>
+              </label>
+            </li>
+        {% endfor %}
+        </ul>
+        <div class="acciones">
+          <button type="submit" name="formato" value="txt" class="boton">Exportar a TXT</button>
+          <button type="submit" name="formato" value="pdf" class="boton boton-secundario">Exportar a PDF</button>
+        </div>
+      </form>
+        {% else %}
+      <p>No encontré resultados para tu búsqueda (o.&lt;.)</p>
+        {% endif %}
+  </section>
+{% endif %}
+      {% endblock %}
