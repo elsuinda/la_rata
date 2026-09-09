@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block titulo %}Exportado - LA RATA{% endblock %}
+{% block contenido %}
+<h1>Exportación</h1>
+{% if error %}
+  <p class="aviso">{{ error }}</p>
+{% else %}
+  <p>Archivo generado: <a href="{{ url_for('descargar_resultado', nombre_archivo=info.archivo) }}">{{ info.archivo }}</a></p>
+  <p>Hash del archivo (<a href="{{ url_for('descargar_resultado', nombre_archivo=info.hash_archivo) }}">descargar</a>):</p>
+  <ul>
+    <li>SHA256: <code>{{ info.sha256 }}</code></li>
+    <li>MD5: <code>{{ info.md5 }}</code></li>
+  </ul>
+{% endif %}
+<a href="{{ url_for('noticias') }}">&larr; Volver a la búsqueda</a>
+{% endblock %}
