@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block titulo %}LA RATA - Inicio{% endblock %}
+{% block contenido %}
+<section class="hero">
+  <h1>🐀 LA RATA</h1>
+  <p>Herramienta local de búsqueda de noticias (vía RSS) y verificación de perfiles.</p>
+  <div class="acciones">
+    <a class="boton" href="{{ url_for('noticias') }}">Buscar noticias</a>
+    <a class="boton boton-secundario" href="{{ url_for('perfiles') }}">Buscar perfiles</a>
+  </div>
+</section>
+{% endblock %}
