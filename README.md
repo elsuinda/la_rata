@@ -1,39 +1,83 @@
-# LA RATA - Herramienta de Búsqueda de Noticias y Perfiles
+# 🐀 LA RATA
 
-**LA RATA** es una herramienta de línea de comandos diseñada para buscar noticias y perfiles en línea. Permite realizar búsquedas en múltiples fuentes de noticias de Argentina, Latinoamérica y EE.UU., así como buscar perfiles en redes sociales utilizando nombres de usuario o direcciones de correo electrónico. Además, ofrece la posibilidad de guardar los resultados en archivos de texto y PDF, y genera hashes SHA256 y MD5 para verificar la integridad de los archivos.
+Herramienta local de búsqueda de noticias y verificación de perfiles, con
+interfaz web. Corre en tu propia máquina — no es un servicio alojado en
+internet, así que no hay que confiarle tus búsquedas a un tercero.
 
-## Características Principales
+![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-3.x-000000?style=flat-square&logo=flask&logoColor=white)
+![Licencia](https://img.shields.io/badge/Licencia-MIT-green?style=flat-square)
 
-- **Búsqueda de Noticias**:
-  - Por palabras clave.
-  - Por frases (usando el símbolo `+` para combinar términos).
-  - Por temática.
-  - Filtrado por fecha (últimas 24 horas, última semana, último mes o sin filtro).
+## Qué hace
 
-- **Búsqueda de Perfiles**:
-  - Por nombre de usuario en redes sociales (Instagram, Facebook, Telegram, VK, Discord, Snapchat, TikTok, Twitter).
-  - Por dirección de correo electrónico.
-
-- **Exportación de Resultados**:
-  - Guardar resultados en archivos de texto.
-  - Generar archivos PDF con los resultados.
-  - Generar hashes SHA256 y MD5 para verificar la integridad de los archivos.
-
-## Requisitos del Sistema
-
-- Python 3.x
-- Dependencias:
-  - `requests`
-  - `bs4` (BeautifulSoup)
-  - `colorama`
-  - `concurrent.futures`
-  - `hashlib`
-  - `reportlab`
+- **Búsqueda de noticias** en medios de Argentina, Latinoamérica, España y
+  medios internacionales, leyendo directamente sus feeds **RSS/Atom**
+  oficiales (no rastrea el HTML de las portadas, que es lento y frágil).
+  Soporta búsqueda por palabra clave, por frase (combinando términos con
+  `+`), y filtro real por fecha de publicación.
+- **Verificación de perfiles** por nombre de usuario o email. GitHub y
+  Reddit se verifican con sus APIs oficiales (resultado confiable). Para el
+  resto de las redes (Instagram, TikTok, Twitter/X, Facebook, Telegram,
+  Discord, Snapchat, VK) la herramienta da el enlace directo pero **no
+  inventa** si el perfil existe o no, porque esas plataformas bloquean la
+  verificación automática o exigen inicio de sesión — cualquier herramienta
+  que te diga "encontrado" ahí sin usar su API oficial está adivinando.
+- **Exportación** de resultados a TXT o PDF, con hash SHA256 y MD5 del
+  archivo generado para verificar su integridad.
 
 ## Instalación
 
-1. Clona este repositorio o descarga el código fuente.
-2. Instala las dependencias necesarias ejecutando el siguiente comando:
+Requiere Python 3.10 o superior.
 
-   ```bash
-   pip install requests bs4 colorama reportlab
+```bash
+git clone https://github.com/elsuinda/la_rata.git
+cd la_rata
+pip install -r requirements.txt
+```
+
+## Uso
+
+```bash
+python app.py
+```
+
+Abrí `http://127.0.0.1:5000` en tu navegador. Para detener el servidor,
+`Ctrl+C` en la terminal.
+
+## Estructura del proyecto
+
+```
+la_rata/
+├── app.py              # Servidor Flask y rutas
+├── core/
+│   ├── news.py         # Búsqueda de noticias vía RSS
+│   ├── profiles.py     # Verificación de perfiles
+│   ├── export.py       # Exportación a TXT/PDF + hashes
+│   └── sources.py      # Lista curada de feeds RSS por región
+├── templates/           # Vistas HTML (Jinja2)
+├── static/style.css     # Estilos
+└── requirements.txt
+```
+
+## Aviso legal y uso ético
+
+LA RATA está pensada como herramienta de apoyo para investigación
+periodística, verificación de fuentes y OSINT defensivo (por ejemplo,
+verificar la existencia de perfiles falsos que suplantan tu identidad o la
+de tu organización). Algunas consideraciones importantes:
+
+- Los resultados de "verificación de perfiles" en redes que no tienen una
+  API pública confiable son **enlaces para revisión manual**, no
+  confirmaciones. No los uses como prueba definitiva de nada.
+- Respetá los Términos de Servicio de cada sitio y la legislación de
+  protección de datos que te aplique (por ejemplo, la Ley 25.326 de
+  Protección de Datos Personales en Argentina, o el RGPD si operás en la
+  Unión Europea). Esta herramienta no está pensada para acoso, doxxing, ni
+  ningún uso que vulnere la privacidad de terceros.
+- El scraping de RSS respeta el uso previsto de esos feeds (son públicos y
+  están pensados para ser consumidos programáticamente), pero igual se
+  recomienda un uso razonable en frecuencia de consultas.
+
+## Licencia
+
+MIT — ver [LICENSE](LICENSE).
