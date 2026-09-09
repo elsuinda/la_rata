@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block titulo %}Buscar perfiles - LA RATA{% endblock %}
+{% block contenido %}
+<h1>Buscar perfiles</h1>
+<form method="post" class="formulario">
+  <label>Buscar por</label>
+  <div class="radios">
+    <label><input type="radio" name="modo" value="usuario" {% if modo == "usuario" %}checked{% endif %}> Nombre de usuario</label>
+    <label><input type="radio" name="modo" value="email" {% if modo == "email" %}checked{% endif %}> Email</label>
+  </div>
+  <input type="text" name="valor" placeholder="nombre de usuario o email" value="{{ valor }}">
+  <button type="submit" class="boton">Buscar</button>
+</form>
+
+{% if resultados is not none %}
+  <section class="resultados">
+    <h2>Resultados para "{{ valor }}"</h2>
+    <ul class="lista-perfiles">
+  {% for r in resultados %}
+        <li class="estado-{{ r.estado }}">
+          <strong>{{ r.plataforma }}</strong>
+  {% if r.estado == "encontrado" %}<span class="tag tag-ok">Encontrado</span>
+  {% elif r.estado == "no_encontrado" %}<span class="tag tag-no">No encontrado</span>
+  {% elif r.estado == "error" %}<span class="tag tag-error">Error</span>
+  {% else %}<span class="tag tag-revisar">Revisar manualmente</span>
+  {% endif %}
+  {% if r.url %}<a href="{{ r.url }}" target="_blank" rel="noopener">{{ r.url }}</a>{% endif %}
+          <p class="meta">{{ r.detalle }}</p>
+        </li>
+  {% endfor %}
+    </ul>
+    <p class="ayuda">Los resultados marcados "Revisar manualmente" son de plataformas que bloquean la verificación automática (requieren login o anti-bot); LA RATA no inventa un resultado ahí, te da el enlace directo.</p>
+  </section>
+{% endif %}
+{% endblock %}
