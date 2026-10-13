@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# =====================================================================
+#  LA RATA - lanzador CLI (start / stop / status)
+#  Arranca el servidor web local y abre el navegador; lo detiene cuando
+#  se lo pide.
+#
+#  Uso:
+#    larata start     inicia el servidor y abre http://127.0.0.1:5000
+#    larata stop      detiene el servidor
+#    larata status    indica si esta corriendo
+#    larata restart   reinicia
+#
+#  Variables:
+#    LARATA_HOME   carpeta de instalacion (por defecto, la del script)
+#    LARATA_PORT   puerto (por defecto 5000)
+#  Autor: Miguel (ElSuinda).
+# =====================================================================
+set -u
+
+LARATA_HOME="${LARATA_HOME:-$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)}"
+APP="$LARATA_HOME/app.py"
+PORT="${LARATA_PORT:-5000}"
+RUNDIR="$HOME/.larata"
+PIDFILE="$RUNDIR/larata.pid"
+PYTHON="${LARATA_PYTHON:-python3}"
+URL="http://127.0.0.1:$PORT"
+
+[ -x "$LARATA_HOME/.venv/bin/python" ] && PYTHON="$LARATA_HOME/.venv/bin/python"
+mkdir -p "$RUNDIR" 2>/dev/null || true
+
+_corriendo() {
+  [ -f "$PIDFILE" ] || return 1
+  local pid; pid="$(cat "$PIDFILE" 2>/dev/null)"
+  [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null
+}
+
+_abrir_navegador() {
+  ( command -v xdg-open >/dev/null 2>&1 && xdg-open "$URL" \
+    || command -v gio >/dev/null 2>&1 && gio open "$URL" \
+    || command -v sensible-browser >/dev/null 2>&1 && sensible-browser "$URL" ) >/dev/null 2>&1 &
+}
+
+start() {
+  if _corriendo; then
+    echo "LA RATA ya esta corriendo (PID $(cat "$PIDFILE")). Abriendo $URL"
+    _abrir_navegador; return 0
+  fi
+  [ -f "$APP" ] || { echo "No se encontro la app en $APP" >&2; exit 1; }
+  echo "Iniciando LA RATA en $URL ..."
+  LARATA_PORT="$PORT" nohup "$PYTHON" "$APP" >"$RUNDIR/larata.out" 2>&1 &
+  echo $! > "$PIDFILE"
+  sleep 2
+  if _corriendo; then
+    echo "LA RATA iniciada (PID $(cat "$PIDFILE")). Abriendo el navegador... @v@"
+    _abrir_navegador
+  else
+    echo "LA RATA no pudo iniciarse. Revisa $RUNDIR/larata.out" >&2
+    exit 1
+  fi
+}
+
+stop() {
+  if ! _corriendo; then echo "LA RATA no esta corriendo."; rm -f "$PIDFILE"; return 0; fi
+  local pid; pid="$(cat "$PIDFILE")"
+  echo "Deteniendo LA RATA (PID $pid)..."
+  kill "$pid" 2>/dev/null
+  for _ in 1 2 3 4 5; do _corriendo || break; sleep 0.4; done
+  _corriendo && kill -9 "$pid" 2>/dev/null
+  rm -f "$PIDFILE"
+  echo "LA RATA detenida."
+}
+
+status() {
+  if _corriendo; then echo "LA RATA esta corriendo (PID $(cat "$PIDFILE")) en $URL"
+  else echo "LA RATA no esta corriendo."; fi
+}
+
+case "${1:-}" in
+  start) start ;;
+  stop) stop ;;
+  restart) stop; start ;;
+  status) status ;;
+  *) echo "LA RATA - OSINT de noticias y perfiles"; echo "Uso: larata {start|stop|restart|status}"; exit 2 ;;
+esac

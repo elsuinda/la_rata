@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
+from urllib.parse import quote
 
 import requests
 
@@ -34,6 +35,9 @@ HEADERS = {
 TIMEOUT_SEGUNDOS = 6
 
 EMAIL_REGEX = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+# Nombre de usuario seguro: letras, numeros, punto, guion y guion bajo (1-64).
+# Evita que un valor con "/", "?", ".." o espacios altere las URLs de las APIs.
+USUARIO_REGEX = re.compile(r"^[A-Za-z0-9._-]{1,64}$")
 
 @dataclass
 class ResultadoPerfil:
@@ -51,10 +55,11 @@ class ResultadoPerfil:
         }
 
 def _chequeo_api_github(usuario: str) -> ResultadoPerfil:
-    url = f"https://github.com/{usuario}"
+    u = quote(usuario, safe="")
+    url = f"https://github.com/{u}"
     try:
         r = requests.get(
-            f"https://api.github.com/users/{usuario}",
+            f"https://api.github.com/users/{u}",
             headers=HEADERS,
             timeout=TIMEOUT_SEGUNDOS,
         )
@@ -67,10 +72,11 @@ def _chequeo_api_github(usuario: str) -> ResultadoPerfil:
         return ResultadoPerfil("GitHub", url, "error", str(exc))
 
 def _chequeo_api_reddit(usuario: str) -> ResultadoPerfil:
-    url = f"https://www.reddit.com/user/{usuario}"
+    u = quote(usuario, safe="")
+    url = f"https://www.reddit.com/user/{u}"
     try:
         r = requests.get(
-            f"https://www.reddit.com/user/{usuario}/about.json",
+            f"https://www.reddit.com/user/{u}/about.json",
             headers=HEADERS,
             timeout=TIMEOUT_SEGUNDOS,
         )
@@ -98,9 +104,15 @@ REDES_NO_VERIFICABLES = {
 }
 
 def buscar_por_usuario(usuario: str) -> list[ResultadoPerfil]:
+    usuario = (usuario or "").strip().lstrip("@")
+    if not USUARIO_REGEX.match(usuario):
+        return [ResultadoPerfil(
+            "Validación", "", "error",
+            "Nombre de usuario inválido (use solo letras, números, '.', '-' y '_').",
+        )]
     resultados = [_chequeo_api_github(usuario), _chequeo_api_reddit(usuario)]
     for red, plantilla in REDES_NO_VERIFICABLES.items():
-        url = plantilla.format(usuario=usuario)
+        url = plantilla.format(usuario=quote(usuario, safe=""))
         resultados.append(
             ResultadoPerfil(red, url, "no_verificable", "Revisar manualmente: la plataforma bloquea verificación automática")
         )
@@ -110,22 +122,23 @@ def buscar_por_email(email: str) -> list[ResultadoPerfil]:
     if not EMAIL_REGEX.match(email):
         return [ResultadoPerfil("Validación", "", "error", "El texto ingresado no parece un email válido")]
 
+    email_q = quote(email, safe="@.")
     resultados = [
         ResultadoPerfil(
             "Google (búsqueda)",
-            f"https://www.google.com/search?q=%22{email}%22",
+            f"https://www.google.com/search?q=%22{email_q}%22",
             "no_verificable",
             "Enlace de búsqueda directa, revisar manualmente",
         ),
         ResultadoPerfil(
             "Have I Been Pwned",
-            f"https://haveibeenpwned.com/account/{email}",
+            f"https://haveibeenpwned.com/account/{email_q}",
             "no_verificable",
             "Revisar manualmente si el email apareció en alguna filtración conocida",
         ),
         ResultadoPerfil(
             "Gravatar",
-            f"https://es.gravatar.com/{email}",
+            f"https://es.gravatar.com/{email_q}",
             "no_verificable",
             "Revisar manualmente si tiene un perfil público de Gravatar",
         ),

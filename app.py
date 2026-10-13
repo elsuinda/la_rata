@@ -12,6 +12,8 @@ Uso:
 """
 from __future__ import annotations
 
+import os
+
 from flask import Flask, render_template, request, send_from_directory
 
 from core.export import CARPETA_RESULTADOS, exportar_pdf, exportar_txt
@@ -19,6 +21,9 @@ from core.news import buscar_noticias
 from core.profiles import buscar_por_email, buscar_por_usuario
 
 app = Flask(__name__)
+
+# Seguridad: limitar el tamanio del cuerpo de los formularios (anti-DoS).
+app.config["MAX_CONTENT_LENGTH"] = 1 * 1024 * 1024  # 1 MB
 
 FILTROS_FECHA = {
     "24h": "Últimas 24 horas",
@@ -98,4 +103,15 @@ def descargar_resultado(nombre_archivo):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    # Seguridad: el modo debug de Flask expone la consola interactiva de
+    # Werkzeug, que permite ejecucion de codigo. Queda DESACTIVADO por
+    # defecto; solo se habilita de forma explicita con LARATA_DEBUG=1.
+    debug = os.environ.get("LARATA_DEBUG", "").lower() in ("1", "true", "si", "yes")
+    host = os.environ.get("LARATA_HOST", "127.0.0.1")   # local por defecto
+    port = int(os.environ.get("LARATA_PORT", "5000"))
+
+    print(f"\n  LA RATA corriendo en http://{host}:{port}")
+    print("  Abri esa direccion en tu navegador. Ctrl+C para detener.\n")
+    if host not in ("127.0.0.1", "localhost"):
+        print("  [!] Estas exponiendo LA RATA fuera de localhost. Asegurate de que sea a proposito.\n")
+    app.run(debug=debug, host=host, port=port)

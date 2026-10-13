@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=LA RATA
+GenericName=OSINT de noticias y perfiles
+Comment=Busqueda de noticias (RSS) y verificacion de perfiles, local
+Exec=larata start
+Icon=larata
+Terminal=false
+Categories=Network;Security;Utility;
+Keywords=osint;noticias;rss;perfiles;investigacion;rata;
+StartupNotify=true

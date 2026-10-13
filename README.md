@@ -127,6 +127,34 @@ python app.py
 Abrí `http://127.0.0.1:5000` en tu navegador. Para detener el servidor,
 `Ctrl+C` en la terminal.
 
+## Instalación en Linux (comando + acceso directo)
+
+En Debian/Ubuntu y derivados, el instalador deja LA RATA lista para usar con un
+comando y como acceso directo (con icono) en el menú de aplicaciones:
+
+```bash
+git clone https://github.com/elsuinda/la_rata.git
+cd la_rata
+./install.sh            # o: sudo ./install.sh  (instalacion a nivel sistema)
+```
+
+Después:
+
+```bash
+larata start     # inicia el servidor local y abre el navegador
+larata stop      # lo detiene
+larata status    # estado
+```
+
+> En la estación **Hercule**, LA RATA se instala automáticamente desde el instalador
+> de la distro (`instalar-apps.sh`), quedando disponible como `larata start/stop`.
+
+## Seguridad
+
+Ver `SECURITY.md`. El modo debug está **desactivado por defecto**, la app escucha solo
+en `localhost`, valida el nombre de usuario antes de construir URLs y escapa el texto en
+las exportaciones a PDF. Para ejecutar en desarrollo con recarga, `LARATA_DEBUG=1`.
+
 ## Estructura del proyecto
 
 ```

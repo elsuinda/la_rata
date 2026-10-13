@@ -2,18 +2,24 @@
 from __future__ import annotations
 
 import hashlib
+import os
 from datetime import datetime
 from pathlib import Path
+from xml.sax.saxutils import escape as _xml_escape
 
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
-CARPETA_RESULTADOS = Path("resultados")
+# Carpeta de salida: configurable (LARATA_OUTPUT_DIR) y, por defecto, estable
+# en el home del usuario para no depender del directorio de trabajo.
+CARPETA_RESULTADOS = Path(
+    os.environ.get("LARATA_OUTPUT_DIR", str(Path.home() / ".larata" / "resultados"))
+)
 
 
 def _asegurar_carpeta() -> Path:
-    CARPETA_RESULTADOS.mkdir(exist_ok=True)
+    CARPETA_RESULTADOS.mkdir(parents=True, exist_ok=True)
     return CARPETA_RESULTADOS
 
 
@@ -49,9 +55,12 @@ def exportar_pdf(titulo: str, lineas: list[str]) -> dict:
 
     doc = SimpleDocTemplate(str(ruta), pagesize=letter)
     estilos = getSampleStyleSheet()
-    contenido = [Paragraph(titulo, estilos["Title"]), Spacer(1, 12)]
+    # reportlab interpreta mini-markup tipo HTML en Paragraph: escapamos
+    # < > & para que titulos/resumenes con esos caracteres no rompan el PDF
+    # ni inyecten markup.
+    contenido = [Paragraph(_xml_escape(titulo), estilos["Title"]), Spacer(1, 12)]
     for linea in lineas:
-        contenido.append(Paragraph(linea, estilos["BodyText"]))
+        contenido.append(Paragraph(_xml_escape(str(linea)), estilos["BodyText"]))
         contenido.append(Spacer(1, 8))
     doc.build(contenido)
 
